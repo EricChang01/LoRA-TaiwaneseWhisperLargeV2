@@ -273,7 +273,7 @@ Note that as we combined the training data of TAT and Taiwanese drama, we notice
 ## User Guide
 
 ### Run train script with required args
-* Modify the following params in `train_peft_TAT_TD.py` and run `run.sh` to train
+* Modify the following params in `train_peft_TAT_TD.py` and run `run.sh` to train.
   - huggingface_user_token: Specify the read/write huggingface access token
   - repo_name: Specify where the processed data is located
   - input_arg["custom_set_train"]: Specify training data
@@ -282,7 +282,7 @@ Note that as we combined the training data of TAT and Taiwanese drama, we notice
 
 ### Run evaluate and test script
 
-Modify the model path on huggingface in `eval_peft_TAT_TD.py` and run `eval.sh` to train
+Modify the model path on huggingface in `eval_peft_TAT_TD.py` and run `eval.sh` to eva; or test.
 
 
 ## Developer Guide
