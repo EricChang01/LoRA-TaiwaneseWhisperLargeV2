@@ -1,0 +1,1 @@
+python3 train_peft_TAT_TD.py  --grad_accum 8 --batch 1 --specified_epoch 0 --total_epoch 5 
