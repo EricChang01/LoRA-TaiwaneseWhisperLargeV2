@@ -73,7 +73,7 @@ def load_peft_model_from_hub(peft_model_id):
     model = WhisperForConditionalGeneration.from_pretrained(
         peft_config.base_model_name_or_path
     )
-    model = PeftModel.from_pretrained(model, peft_model_id,  is_trainable=True) 
+    model = PeftModel.from_pretrained(model, peft_model_id,  is_trainable=True) # the is_trainable parameter=true to make sure the model is tranable is we load the checkpoint instead of the base model. 
     
     print("Load model from hub successfully.")
     return model
@@ -138,9 +138,7 @@ class LrRescheduleTrainer(Seq2SeqTrainer):
 
     def _get_linear_schedule_with_warmup_lr_lambda(self, current_step: int, *, num_warmup_steps: int, num_training_steps: int):
         # The only difference
-        # current_step += num_training_steps * input_arg['specified_epoch']
         current_step += num_training_steps * self.specified_epoch
-        # num_training_steps *= input_arg['total_epoch']
         num_training_steps *= self.total_epoch
 
         if current_step < num_warmup_steps:
@@ -151,9 +149,6 @@ def experiment(input_arg, model, processor, data_collator, repo_name, data_train
     ################
     #     Train    #
     ################
-    print("*****DEBUG*****")
-    print(f'specified_epoch: {input_arg["specified_epoch"]}')
-    print("***************")
 
 
     if input_arg.get("sweep_split_shard", False):
@@ -216,24 +211,14 @@ def experiment(input_arg, model, processor, data_collator, repo_name, data_train
     
     # Push to Hub    
     peft_model_id = "EricChang/" + f"TAT-TD-{input_arg['model_config']}-Lora-ContinualTraining".replace("/", "-")
-    # peft_model_id = "EricChang/" + f"TD500-{input_arg['model_config']}-Lora".replace("/", "-")
     if input_arg['specified_epoch'] is not None:
         peft_model_id += f"-epoch{str(input_arg['specified_epoch']+1)}-total{input_arg['total_epoch']}epoch"
     print(f"peft_model_id: {peft_model_id}")
 
     if not input_arg.get("only_eval", False):
         trainer.train(input_arg.get("checkpoint", None))
-        model.push_to_hub(peft_model_id, use_auth_token='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')
-        # trainer.train(resume_from_checkpoint=True)   
-    #     try:
-    #         model.push_to_hub(peft_model_id, use_auth_token='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')
-    #     except:
-    #         trainer.save_model(input_arg.get("output_dir", repo_name))
-    #         print(f'Save model locally.: {input_arg.get("output_dir", repo_name)}')
+        model.push_to_hub(peft_model_id, use_auth_token='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') # Note: should use your own huggingface token
     elif input_arg.get("checkpoint", None) is None:
-        print("======================================")
-        print("Loading model from hub")
-        print("======================================")
         model = load_peft_model_from_hub(peft_model_id)
     
     ###################
@@ -296,16 +281,8 @@ def main(arg=None):
     ############
     size = "large-v2"
     time = datetime.now().strftime('%Y%m%d-%H%M%S')
-    # input_arg["custom_set_train"] = "./TAT-data/taiwen/TAT-Vol1-train.csv"
-    # input_arg["custom_set_train"] = "./TAT-data/taiwen/TAT-train.csv"
-    # input_arg["custom_set_train"] = "/work/hungyi2022/taiwanese-meta/taiwanese-meta-2.6sec-train.csv"
-    input_arg["custom_set_train"] = "/work/hungyi2022/TAT-TD-data/TATTD-all-train.csv"
-    # input_arg["custom_set_train"] = "/work/hungyi2022/TAT-TD-data/TD_500.csv"
-    # input_arg["custom_set_test"] = "./TAT-data/taiwen/TAT-Vol1-eval.csv"
-    # input_arg["custom_set_test"] = "./TAT-data/taiwen/TAT-eval.csv"
-    # input_arg["custom_set_test"] = "./TAT-data/taiwen/TAT-test.csv"
-    # input_arg["custom_set_test"] = "/work/hungyi2022/taiwanese-meta/taiwanese-meta-2.6sec-eval.csv" # NOTE: remenber to change it to "eval" or "test" as they are both named test in the script
-    # input_arg["test_data"] = "/work/hungyi2022/TAT-TD-data/TATTD-all-eval.csv"
+    input_arg["custom_set_train"] = "/work/hungyi2022/taiwanese-meta/taiwanese-meta-train.csv" # NOTE: specify your training data here
+    input_arg["custom_set_test"] = "/work/hungyi2022/taiwanese-meta/taiwanese-meta-eval.csv" # NOTE: specify the evaluation or testing data
     input_arg["tokenize_config"] = f"openai/whisper-{size}"
     input_arg["model_config"] = f"openai/whisper-{size}"
     input_arg["output_dir"] = f"outputs/{time}"
@@ -314,18 +291,8 @@ def main(arg=None):
     input_arg["load_cache"] = True # NOTE: set this to generate .data file (could cause lots of time)
     input_arg["epoch"] = 1
     dropout = input_arg.get("dropout", 0.0)
-    print("*****DEBUG*****")
-    print(f"dropout: {dropout}")
-    print(f'epoch: {input_arg.get("epoch", 5)}')
-    print(f'specified_epoch: {input_arg["specified_epoch"]}')
-    print("***************")
 
-    print("input_arg", input_arg)
-
-    # repo_name = f"/work/hungyi2022/peft/{input_arg['model_config']}-TW-meta-2.6"
-    repo_name = f"/work/hungyi2022/peft/{input_arg['model_config']}-TAT-TD"
-    # repo_name = f"/work/hungyi2022/peft/{input_arg['model_config']}-TD500"
-    # input_arg['output_dir'] = repo_name
+    repo_name = f"/work/hungyi2022/peft/{input_arg['model_config']}-TAT-TD" # NOTE: specify where the cached data is located
     
     ############
     #  Model   #
@@ -346,17 +313,16 @@ def main(arg=None):
     if input_arg.get('checkpoint', None) is not None:
         model = load_peft_model_from_hub(input_arg.get('checkpoint', None))
     else:
+        # Load from huggingface checkpoint
+        model = load_peft_model_from_hub("EricChang/TAT-TD-openai-whisper-large-v2-Lora-epoch5-total5epoch") 
+        
+        # load from base model
         # model = WhisperForConditionalGeneration.from_pretrained(input_arg["model_config"])
-        model = load_peft_model_from_hub("EricChang/TAT-TD-openai-whisper-large-v2-Lora-epoch5-total5epoch")
         # config = LoraConfig(r=32, lora_alpha=64, target_modules=["q_proj", "v_proj"], lora_dropout=0.05, bias="none")
         # model = get_peft_model(model, config)
        
-    # model.train()
     model = model.to("cuda")
-
-    # for p in model.parameters():
-    #     print(p)
-
+    
     model.config.forced_decoder_ids = None
     model.config.suppress_tokens = []
     
@@ -377,44 +343,6 @@ def main(arg=None):
         dataset = dataset.filter(lambda e: nlp2.is_file_exist(e["path"]))
 
 
-        # original code
-        # print("before filtering audio length")
-        # print("data train", data_train)
-        # print("data test", data_test)
-        # if input_arg.get("max_input_length_in_sec", None):
-        #     max_input_length_in_sec = input_arg["max_input_length_in_sec"]
-        #     min_input_length_in_sec = 1
-        #     data_train = data_train.filter(
-        #         lambda x: min_input_length_in_sec * processor.feature_extractor.sampling_rate
-        #         < x
-        #         < max_input_length_in_sec * processor.feature_extractor.sampling_rate,
-        #         input_columns=["lengths"],
-        #     )
-        #     data_test = data_test.filter(
-        #         lambda x: min_input_length_in_sec * processor.feature_extractor.sampling_rate
-        #         < x
-        #         < max_input_length_in_sec * processor.feature_extractor.sampling_rate,
-        #         input_columns=["lengths"],
-        #     )
-        # print("after filtering audio length")
-        # print("data train", data_train)
-        # print("data test", data_test)
-
-        # ======================================= #
-
-        # print("before filtering label length")
-        # print("data train", data_train)[]
-        # print("data test", data_test)
-
-        # data_train = data_train.filter(lambda x: x is not None and 0 < len(x), input_columns=["labels"])
-        # data_test = data_test.filter(lambda x: x is not None and 0 < len(x), input_columns=["labels"])
-        # print("after filtering label length")
-        # print("data train", data_train)
-        # print("data test", data_test)
-
-        # ======================================= #
-        # subprocess.run("rm -rf /home/hungyi2022/.cache", shell=True, check=True)
-
         data_train = dataset["train"]
         data_train = data_train.map(
             prepare_dataset_whisper,
@@ -422,35 +350,26 @@ def main(arg=None):
             fn_kwargs={"feature_extractor": processor.feature_extractor, "audio_feature_key": audio_feature_key},
         )
 
-        print("before encoding train dataset")
-        print("data train", data_train)
-
         if not input_arg.get("only_eval", False):
             data_train = data_train.map(encode_dataset, fn_kwargs={"processor": processor})
             data_train.save_to_disk(f"{repo_name}-train.data")
-
-        print("after encoding train dataset")
-        print("data train", data_train)
 
         # subprocess.run("rm -rf /home/hungyi2022/.cache", shell=True, check=True)
 
         # data_train = load_from_disk(f"{repo_name}-train.data")
 
-        # if "custom_set_test" in input_arg:
-        #     dataset_test = load_dataset(
-        #         "csv", 
-        #         data_files=input_arg["custom_set_test"], 
-        #         cache_dir=input_arg["cache_dir"],
-        #         # cache_dir=None,
-        #     )
-        #     dataset_test = dataset_test.filter(lambda e: nlp2.is_file_exist(e["path"]))
-        #     data_test = dataset_test["train"]
-        # else:
-        #     dataset = dataset["train"].train_test_split(test_size=0.1)
-        #     data_test = dataset["test"]
-
-        # print("before encoding test dataset")
-        # print("data test", data_test)
+        if "custom_set_test" in input_arg:
+            dataset_test = load_dataset(
+                "csv", 
+                data_files=input_arg["custom_set_test"], 
+                cache_dir=input_arg["cache_dir"],
+                # cache_dir=None,
+            )
+            dataset_test = dataset_test.filter(lambda e: nlp2.is_file_exist(e["path"]))
+            data_test = dataset_test["train"]
+        else:
+            dataset = dataset["train"].train_test_split(test_size=0.1)
+            data_test = dataset["test"]
 
         # data_test = data_test.map(
         #     prepare_dataset_whisper,
@@ -458,26 +377,14 @@ def main(arg=None):
         #     fn_kwargs={"feature_extractor": processor.feature_extractor, "audio_feature_key": audio_feature_key},
         # )
         
-        # data_test = data_test.map(encode_dataset, fn_kwargs={"processor": processor})
-        # if not input_arg.get("only_eval", False):
-        #     data_test.save_to_disk(f"{repo_name}-test.data")
+        data_test = data_test.map(encode_dataset, fn_kwargs={"processor": processor})
+        if not input_arg.get("only_eval", False):
+            data_test.save_to_disk(f"{repo_name}-test.data")
 
-        # print("after encoding test dataset")
-        # print("data test", data_test)
-        data_test = load_from_disk("/work/hungyi2022/peft/openai/whisper-large-v2-TW-meta-2.6-eval.data")
     else:
         print("Start loading cache dataset")
         data_train = load_from_disk(f"{repo_name}-train.data")
-        # data_train = load_from_disk("/work/hungyi2022/peft/openai/whisper-large-v2-TD500-train.data")
-        # data_test = load_from_disk(f"{repo_name}-test.data")
-        # data_test = load_from_disk("/work/hungyi2022/peft/openai/whisper-large-v2-TW-meta-2.6-eval.data")
-        data_test = load_from_disk("/work/hungyi2022/peft/openai/whisper-large-v2-TD-1000-test.data")
-    
-
-    print("finalize dataset")
-    print("data train", data_train)
-    print("data test", data_test)
-
+        data_test = load_from_disk(f"{repo_name}-eval.data")
 
     def compute_metrics(pred):
         # print(pred.shape)
@@ -494,11 +401,6 @@ def main(arg=None):
         nlp2.write_csv(pred_result, f"pred_{time}.csv")
         # print 10 predict result randomly for debug
         random.shuffle(pred_result)
-        print("pred_result")
-        print("=================================")
-        for i in range(10):
-            print(pred_result[i])
-        print("=================================")
         return {"cer": cer, "wer": wer}
 
     for i in range(input_arg['total_epoch']):
