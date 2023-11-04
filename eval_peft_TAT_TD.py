@@ -356,116 +356,31 @@ def main(arg=None):
     ############
 
     if not input_arg.get("load_cache", False):
-        # data set
-        # dataset = load_dataset(
-        #     "csv", 
-        #     data_files=input_arg["custom_set_train"], 
-        #     cache_dir=input_arg["cache_dir"], 
-        #     # cache_dir=None, 
-        #     )
-        # dataset = dataset.filter(lambda e: nlp2.is_file_exist(e["path"]))
-        if "custom_set_test" in input_arg:
-            print(f"Loading custom set test: {input_arg['custom_set_test']}")
-            dataset_test = load_dataset(
-                "csv", 
-                data_files=input_arg["custom_set_test"], 
-                cache_dir=input_arg["cache_dir"],
-                # cache_dir=None,
-            )
-            dataset_test = dataset_test.filter(lambda e: nlp2.is_file_exist(e["path"]))
-            data_test = dataset_test["train"]
-        else:
-            # dataset = dataset["train"].train_test_split(test_size=0.1)
-            # data_test = dataset["test"]
-            data_test = load_from_disk("/work/hungyi2022/peft/openai/whisper-large-v2-TD500-train.data")
 
-        # data_train = dataset["train"]
-        # data_train = data_train.map(
-        #     prepare_dataset_whisper,
-        #     num_proc=input_arg["num_proc"],
-        #     fn_kwargs={"feature_extractor": processor.feature_extractor, "audio_feature_key": audio_feature_key},
-        # )
+        dataset_test = load_dataset(
+            "csv", 
+            data_files=input_arg["custom_set_test"], 
+            cache_dir=input_arg["cache_dir"],
+            # cache_dir=None,
+        )
+        dataset_test = dataset_test.filter(lambda e: nlp2.is_file_exist(e["path"]))
+        data_test = dataset_test["train"]
+
         data_test = data_test.map(
             prepare_dataset_whisper,
             num_proc=input_arg["num_proc"],
             fn_kwargs={"feature_extractor": processor.feature_extractor, "audio_feature_key": audio_feature_key},
         )
 
-        # original code
-        print("before filtering audio length")
-        # print("data train", data_train)
-        print("data test", data_test)
-        # if input_arg.get("max_input_length_in_sec", None):
-        #     max_input_length_in_sec = input_arg["max_input_length_in_sec"]
-        #     min_input_length_in_sec = 1
-        #     # data_train = data_train.filter(
-        #     #     lambda x: min_input_length_in_sec * processor.feature_extractor.sampling_rate
-        #     #     < x
-        #     #     < max_input_length_in_sec * processor.feature_extractor.sampling_rate,
-        #     #     input_columns=["lengths"],
-        #     # )
-        #     data_test = data_test.filter(
-        #         lambda x: min_input_length_in_sec * processor.feature_extractor.sampling_rate
-        #         < x
-        #         < max_input_length_in_sec * processor.feature_extractor.sampling_rate,
-        #         input_columns=["lengths"],
-        #     )
-        # print("after filtering audio length")
-        # # print("data train", data_train)
-        # print("data test", data_test)
-
-        # ======================================= #
-
-        print("before filtering label length")
-        # print("data train", data_train)
-        print("data test", data_test)
-        # data_train = data_train.filter(lambda x: x is not None and 0 < len(x), input_columns=["labels"])
         data_test = data_test.filter(lambda x: x is not None and 0 < len(x), input_columns=["labels"])
-        print("after filtering label length")
-        # print("data train", data_train)
-        print("data test", data_test)
 
-        # ======================================= #
-        # subprocess.run("rm -rf /home/hungyi2022/.cache", shell=True, check=True)
-
-        print("before encoding dataset")
-        # print("data train", data_train)
-        print("data test", data_test)
-
-        # if not input_arg.get("only_eval", False):
-            # data_train = data_train.map(encode_dataset, fn_kwargs={"processor": processor})
-            # data_train.save_to_disk(f"{repo_name}-train.data")
-        
         data_test = data_test.map(encode_dataset, fn_kwargs={"processor": processor})
         data_test.save_to_disk(f"{repo_name}-test.data")
-        # data_train = load_from_disk(f"{repo_name}-train.data")
-        data_train = load_from_disk("/work/hungyi2022/peft/openai/whisper-large-v2-TD500-train.data")
-        print("after encoding dataset")
-        print("data train", data_train)
-        print("data test", data_test)
+
+        data_train = load_from_disk("/work/hungyi2022/peft/openai/whisper-large-v2-TD500-train.data") # load a random file here
     else:
-        print(f"Load from cache!")
-        # data_train = load_from_disk(f"{repo_name}-train.data")
-        data_train = load_from_disk("/work/hungyi2022/peft/openai/whisper-large-v2-TD500-train.data")
-
-        # data_test = load_from_disk(f"{repo_name}-test.data")
-        # data_test = load_from_disk("/work/hungyi2022/peft/openai/whisper-large-v2-TW-meta-2.6-eval.data")
-        # data_test = load_from_disk("/work/hungyi2022/peft/openai/whisper-large-v2-TW-meta-2.6-test.data")
-        # data_test = load_from_disk("/work/hungyi2022/peft/TAT-data/taiwen/whisper-large-v2-taiwen-TAT-eval.data")
-        # data_test = load_from_disk("/work/hungyi2022/peft/TAT-data/taiwen/whisper-large-v2-taiwen-TAT-test.data")
-        # data_test = load_from_disk("/work/hungyi2022/peft/openai/whisper-large-v2-TAT-TD-test.data")
-        # data_test = load_from_disk("/work/hungyi2022/peft/openai/whisper-large-v2-TAT-TD-test.data") 
-        data_test = load_from_disk("/work/hungyi2022/peft/openai/whisper-large-v2-TW-meta-test.data")
-    
-
-    print("finalize dataset")
-    print("data train", data_train)
-    print("data test", data_test)
-
-    print("======================================")
-    print("Finish processing dataset")
-    print("======================================")
-
+        data_train = load_from_disk(f"{repo_name}-train.data")
+        data_test = load_from_disk(f"{repo_name}-eval.data")
 
     def compute_metrics(pred):
         # print(pred.shape)
@@ -482,14 +397,9 @@ def main(arg=None):
         nlp2.write_csv(pred_result, f"pred_{time}.csv")
         # print 10 predict result randomly for debug
         random.shuffle(pred_result)
-        print("pred_result")
-        print("=================================")
-        for i in range(10):
-            print(pred_result[i])
-        print("=================================")
         return {"cer": cer, "wer": wer}
 
-    # for i in range(input_arg['total_epoch']):
+    # NOTE: specify the model checkpoints on huggingface
     models = [
         "EricChang/TAT-TD-openai-whisper-large-v2-Lora-ContinualTraining-epoch3-total5epoch",
     ]

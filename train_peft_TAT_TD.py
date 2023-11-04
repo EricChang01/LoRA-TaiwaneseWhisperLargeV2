@@ -48,7 +48,7 @@ import gc
 import torch
 import subprocess
 
-
+huggingface_user_token ='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' NOTE: specify the read/write huggingface access token
 
 class SavePeftModelCallback(TrainerCallback):
     def on_save(
@@ -217,7 +217,7 @@ def experiment(input_arg, model, processor, data_collator, repo_name, data_train
 
     if not input_arg.get("only_eval", False):
         trainer.train(input_arg.get("checkpoint", None))
-        model.push_to_hub(peft_model_id, use_auth_token='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') # Note: should use your own huggingface token
+        model.push_to_hub(peft_model_id, use_auth_token=huggingface_user_token) 
     elif input_arg.get("checkpoint", None) is None:
         model = load_peft_model_from_hub(peft_model_id)
     
@@ -292,7 +292,7 @@ def main(arg=None):
     input_arg["epoch"] = 1
     dropout = input_arg.get("dropout", 0.0)
 
-    repo_name = f"/work/hungyi2022/peft/{input_arg['model_config']}-TAT-TD" # NOTE: specify where the cached data is located
+    repo_name = f"/work/hungyi2022/peft/{input_arg['model_config']}-TAT-TD" # NOTE: specify where the processed data is located
     
     ############
     #  Model   #

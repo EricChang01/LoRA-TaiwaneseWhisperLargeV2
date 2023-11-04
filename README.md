@@ -13,7 +13,6 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 -->
-## Experiment
 
 ### Base Model
 
@@ -274,26 +273,17 @@ Note that as we combined the training data of TAT and Taiwanese drama, we notice
 ## User Guide
 
 ### Run train script with required args
-
-(You should comment out the Config section in `train_peft.py`)
-
-```
-python3 train_peft.py  
-    --model_config <whisper_model_name_or_path> \
-    --tokenize_config <tokenizer_name_or_path> \
-    --repo_name <path/to/store/processed/data> \
-    --train_data <path/to/train/csv>
-    --test_data <path/to/test/csv> \
-    --hub_username <hub_username> \
-    --hub_use_auth_token <hub_use_auth_token> \
-    --hub_model_name <hub_model_name> \
-```
+* Modify the following params in `train_peft_TAT_TD.py` and run `run.sh` to train
+  - huggingface_user_token: Specify the read/write huggingface access token
+  - repo_name: Specify where the processed data is located
+  - input_arg["custom_set_train"]: Specify training data
+  - input_arg["custom_set_test"]: Specify evaluation or testing data
+  - input_arg["load_cache"]: Set to true to load from processed data in cache directory, otherwise load the data csv file and processed again(may take lots of time)
 
 ### Run evaluate and test script
 
-Add `--only_eval` when running `train_peft.py`.
+Modify the model path on huggingface in `eval_peft_TAT_TD.py` and run `eval.sh` to train
 
----
 
 ## Developer Guide
 
