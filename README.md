@@ -184,7 +184,7 @@ We finetune `whisper-large-v2` by [LoRA](https://arxiv.org/abs/2106.09685) with 
 
 ![](https://hackmd.io/_uploads/S1Q-5WY_h.png)
 
-#### Finetune on TAT + TD (both the entire dstasets)
+#### Finetune on TAT + TD (both the entire datasets)
 
 Following the above experiements, we try to fine-tune with the entire TAT and Taiwanese drama dataset. We have results for fine-tuning with 8 epochs. Note that the fine-tuning was conducted in two phases, initially we only ran 5 epochs, and the 6-8 epochs were fine-tuned contiually from the model of the fifth epoch.
 
@@ -254,7 +254,7 @@ Following the above experiements, we try to fine-tune with the entire TAT and Ta
         <td>0.6919</td>
     </tr>
     <tr>
-        <td>EricChang/TAT-TD-openai-whisper-large-v2-Lora-ContinualTraining-epoch3-total5epoch/td>
+        <td>EricChang/TAT-TD-openai-whisper-large-v2-Lora-ContinualTraining-epoch3-total5epoch</td>
         <td>8</td>
         <td>0.2019</td>
         <td>0.1953</td>
@@ -284,7 +284,6 @@ Note that as we combined the training data of TAT and Taiwanese drama, we notice
 
 Modify the model path on huggingface in `eval_peft_TAT_TD.py` and run `eval.sh` to eva; or test.
 
-
 ## Developer Guide
 
 This script allows you to finetune Whisper by Lora and "evaluate & save model on hub" for every epoch. (by using customed trainer)
@@ -292,6 +291,8 @@ This script allows you to finetune Whisper by Lora and "evaluate & save model on
 ### Reference
 - https://github.com/ga642381/Taiwanese-Whisper
 - https://github.com/huggingface/peft/blob/main/examples/int8_training/peft_bnb_whisper_large_v2_training.ipynb
+- https://github.com/YungYi0202/peft (a more general training and evaluation scripts can be found here)
+
 
 ### Note
 
