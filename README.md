@@ -281,7 +281,7 @@ We also calculate the character error rate of each model if we remove don't cons
         <td>CER on TAT test</td>
     </tr>
     <tr>
-        <td>EricChang/TAT-TD-openai-whisper-large-v2-Lora-epoch1-total5epoch</td>
+        <td>[EricChang/TAT-TD-openai-whisper-large-v2-Lora-epoch1-total5epoch](https://huggingface.co/EricChang/TAT-TD-openai-whisper-large-v2-Lora-epoch5-total5epoch)</td>
         <td>1</td>
         <td>0.3216</td>
         <td>0.3197</td>
