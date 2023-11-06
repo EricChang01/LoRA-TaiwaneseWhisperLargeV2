@@ -281,7 +281,7 @@ We also calculate the character error rate of each model if we remove don't cons
         <td>CER on TAT test</td>
     </tr>
     <tr>
-        <td>[EricChang/TAT-TD-openai-whisper-large-v2-Lora-epoch1-total5epoch](https://huggingface.co/EricChang/TAT-TD-openai-whisper-large-v2-Lora-epoch5-total5epoch)</td>
+        <td>https://huggingface.co/EricChang/TAT-TD-openai-whisper-large-v2-Lora-epoch5-total5epoch</td>
         <td>1</td>
         <td>0.3216</td>
         <td>0.3197</td>
@@ -289,7 +289,7 @@ We also calculate the character error rate of each model if we remove don't cons
         <td>0.6345</td>
     </tr>
     <tr>
-        <td>EricChang/TAT-TD-openai-whisper-large-v2-Lora-epoch2-total5epoch</td>
+        <td>https://huggingface.co/EricChang/TAT-TD-openai-whisper-large-v2-Lora-epoch2-total5epoch</td>
         <td>2</td>
         <td>0.2873</td>
         <td>0.2840</td>
@@ -297,7 +297,7 @@ We also calculate the character error rate of each model if we remove don't cons
         <td>0.6376</td>
     </tr>
     <tr>
-        <td>EricChang/TAT-TD-openai-whisper-large-v2-Lora-epoch3-total5epoch</td>
+        <td>https://huggingface.co/EricChang/TAT-TD-openai-whisper-large-v2-Lora-epoch3-total5epoch</td>
         <td>3</td>
         <td>0.2653</td>
         <td>0.2579</td>
@@ -305,7 +305,7 @@ We also calculate the character error rate of each model if we remove don't cons
         <td>0.6685</td>
     </tr>
     <tr>
-        <td>EricChang/TAT-TD-openai-whisper-large-v2-Lora-epoch4-total5epoch</td>
+        <td>https://huggingface.co/EricChang/TAT-TD-openai-whisper-large-v2-Lora-epoch4-total5epoch</td>
         <td>4</td>
         <td>0.2362</td>
         <td>0.2318</td>
@@ -313,7 +313,7 @@ We also calculate the character error rate of each model if we remove don't cons
         <td>0.6449</td>
     </tr>
     <tr>
-        <td>EricChang/TAT-TD-openai-whisper-large-v2-Lora-epoch5-total5epoch</td>
+        <td>https://huggingface.co/EricChang/TAT-TD-openai-whisper-large-v2-Lora-epoch5-total5epoch</td>
         <td>5</td>
         <td>0.2084</td>
         <td>0.2024</td>
@@ -321,7 +321,7 @@ We also calculate the character error rate of each model if we remove don't cons
         <td>0.6535</td>
     </tr>
     <tr>
-        <td>EricChang/TAT-TD-openai-whisper-large-v2-Lora-ContinualTraining-epoch1-total5epoch</td>
+        <td>https://huggingface.co/EricChang/TAT-TD-openai-whisper-large-v2-Lora-ContinualTraining-epoch1-total5epoch</td>
         <td>6</td>
         <td>0.2195</td>
         <td>0.2132</td>
@@ -329,7 +329,7 @@ We also calculate the character error rate of each model if we remove don't cons
         <td>0.6951</td>
     </tr>
     <tr>
-        <td>EricChang/TAT-TD-openai-whisper-large-v2-Lora-ContinualTraining-epoch2-total5epoch</td>
+        <td>https://huggingface.co/EricChang/TAT-TD-openai-whisper-large-v2-Lora-ContinualTraining-epoch2-total5epoch</td>
         <td>7</td>
         <td>0.2121</td>
         <td>0.2029</td>
@@ -337,7 +337,7 @@ We also calculate the character error rate of each model if we remove don't cons
         <td>0.6919</td>
     </tr>
     <tr>
-        <td>EricChang/TAT-TD-openai-whisper-large-v2-Lora-ContinualTraining-epoch3-total5epoch</td>
+        <td>https://huggingface.co/EricChang/TAT-TD-openai-whisper-large-v2-Lora-ContinualTraining-epoch3-total5epoch</td>
         <td>8</td>
         <td>0.2019</td>
         <td>0.1953</td>
@@ -358,7 +358,7 @@ We also evaluate the character error rate if we don't consider the marks (period
         <td>CER on TAT test</td>
     </tr>
     <tr>
-        <td>EricChang/TAT-TD-openai-whisper-large-v2-Lora-epoch1-total5epoch</td>
+        <td>https://huggingface.co/EricChang/TAT-TD-openai-whisper-large-v2-Lora-epoch1-total5epoch</td>
         <td>1</td>
         <td>0.3211</td>
         <td>0.3192</td>
@@ -366,7 +366,7 @@ We also evaluate the character error rate if we don't consider the marks (period
         <td>0.6044</td>
     </tr>
     <tr>
-        <td>EricChang/TAT-TD-openai-whisper-large-v2-Lora-epoch2-total5epoch</td>
+        <td>https://huggingface.co/EricChang/TAT-TD-openai-whisper-large-v2-Lora-epoch2-total5epoch</td>
         <td>2</td>
         <td>0.2868</td>
         <td>0.2825</td>
@@ -374,7 +374,7 @@ We also evaluate the character error rate if we don't consider the marks (period
         <td>0.6076</td>
     </tr>
     <tr>
-        <td>EricChang/TAT-TD-openai-whisper-large-v2-Lora-epoch3-total5epoch</td>
+        <td>https://huggingface.co/EricChang/TAT-TD-openai-whisper-large-v2-Lora-epoch3-total5epoch</td>
         <td>3</td>
         <td>0.2648</td>
         <td>0.2575</td>
@@ -382,7 +382,7 @@ We also evaluate the character error rate if we don't consider the marks (period
         <td>0.6478</td>
     </tr>
     <tr>
-        <td>EricChang/TAT-TD-openai-whisper-large-v2-Lora-epoch4-total5epoch</td>
+        <td>https://huggingface.co/EricChang/TAT-TD-openai-whisper-large-v2-Lora-epoch4-total5epoch</td>
         <td>4</td>
         <td>0.2355</td>
         <td>0.2313</td>
@@ -390,7 +390,7 @@ We also evaluate the character error rate if we don't consider the marks (period
         <td>0.6183</td>
     </tr>
     <tr>
-        <td>EricChang/TAT-TD-openai-whisper-large-v2-Lora-epoch5-total5epoch</td>
+        <td>https://huggingface.co/EricChang/TAT-TD-openai-whisper-large-v2-Lora-epoch5-total5epoch</td>
         <td>5</td>
         <td>0.2077</td>
         <td>0.2019</td>
@@ -398,7 +398,7 @@ We also evaluate the character error rate if we don't consider the marks (period
         <td>0.6268</td>
     </tr>
     <tr>
-        <td>EricChang/TAT-TD-openai-whisper-large-v2-Lora-ContinualTraining-epoch1-total5epoch</td>
+        <td>https://huggingface.co/EricChang/TAT-TD-openai-whisper-large-v2-Lora-ContinualTraining-epoch1-total5epoch</td>
         <td>6</td>
         <td>0.2189</td>
         <td>0.2127</td>
@@ -406,7 +406,7 @@ We also evaluate the character error rate if we don't consider the marks (period
         <td>0.6766</td>
     </tr>
     <tr>
-        <td>EricChang/TAT-TD-openai-whisper-large-v2-Lora-ContinualTraining-epoch2-total5epoch</td>
+        <td>https://huggingface.co/EricChang/TAT-TD-openai-whisper-large-v2-Lora-ContinualTraining-epoch2-total5epoch</td>
         <td>7</td>
         <td>0.2115</td>
         <td>0.2024</td>
@@ -414,7 +414,7 @@ We also evaluate the character error rate if we don't consider the marks (period
         <td>0.6731</td>
     </tr>
     <tr>
-        <td>EricChang/TAT-TD-openai-whisper-large-v2-Lora-ContinualTraining-epoch3-total5epoch</td>
+        <td>https://huggingface.co/EricChang/TAT-TD-openai-whisper-large-v2-Lora-ContinualTraining-epoch3-total5epoch</td>
         <td>8</td>
         <td>0.2013</td>
         <td>0.1947</td>
